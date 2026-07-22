@@ -19,3 +19,23 @@ body {
     animation: none !important;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #letter-print-area,
+  #letter-print-area * {
+    visibility: visible;
+  }
+  #letter-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    color: black !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}

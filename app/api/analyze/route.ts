@@ -58,9 +58,14 @@ export async function POST(req: NextRequest) {
         data: buf.toString("base64"),
       },
     });
+    const label = bureaus[i] || "credit";
+    const description =
+      label === "All 3 bureaus (tri-merge)"
+        ? "The document above is the member's full tri-merge credit report, containing all three bureaus (Experian, Equifax, and TransUnion) in one file. Read all three bureaus' sections and cross-check accounts between them."
+        : `The document above is the member's ${label} report.`;
     content.push({
       type: "text",
-      text: `The document above is the member's ${bureaus[i] || "credit"} report.`,
+      text: description,
     });
   }
 
