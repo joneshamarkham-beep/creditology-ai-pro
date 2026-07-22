@@ -36,12 +36,20 @@ export default async function DashboardPage() {
           You&apos;re logged in. Upload a report to run the Creditology
           Method.
         </div>
-        <Link
-          href="/dashboard/analyze"
-          className="inline-block bg-terracotta text-[#1A0F09] font-bold rounded-lg px-5 py-3 text-sm"
-        >
-          Analyze a report
-        </Link>
+        <div className="flex gap-3 flex-wrap">
+          <Link
+            href="/dashboard/analyze"
+            className="inline-block bg-terracotta text-[#1A0F09] font-bold rounded-lg px-5 py-3 text-sm"
+          >
+            Analyze a report
+          </Link>
+          <Link
+            href="/dashboard/tracker"
+            className="inline-block border border-line text-gold rounded-lg px-5 py-3 text-sm"
+          >
+            Round tracker
+          </Link>
+        </div>
       </div>
 
       <footer className="text-center text-creamDim text-[11px] mt-12 tracking-wider">

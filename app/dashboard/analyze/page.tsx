@@ -29,6 +29,7 @@ export default function AnalyzePage() {
     "upload" | "analyzing" | "results" | "letter"
   >("upload");
   const [analysis, setAnalysis] = useState<any>(null);
+  const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   // Identity theft screening
@@ -44,6 +45,8 @@ export default function AnalyzePage() {
   const [letter, setLetter] = useState("");
   const [letterLoading, setLetterLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [loggedTrackedItemId, setLoggedTrackedItemId] = useState<string | null>(null);
+  const [loggingTracker, setLoggingTracker] = useState(false);
 
   const addFiles = (fileList: FileList) => {
     setError("");
@@ -77,6 +80,7 @@ export default function AnalyzePage() {
       if (!res.ok) throw new Error(data.error || "Analysis failed.");
 
       setAnalysis(data.analysis);
+      setAnalysisId(data.id);
       setScreen("results");
     } catch (e: any) {
       setError(e.message || "Analysis failed. Try again.");
@@ -107,7 +111,37 @@ export default function AnalyzePage() {
     setActiveItem(item);
     setLetter("");
     setError("");
+    setLoggedTrackedItemId(null);
     setScreen("letter");
+  };
+
+  const logToTracker = async () => {
+    if (!activeItem) return;
+    setLoggingTracker(true);
+    setError("");
+    try {
+      const res = await fetch("/api/tracker/log-sent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          analysisId,
+          account: activeItem.account,
+          itemType: activeItem.itemType,
+          bureaus: activeItem.bureaus,
+          balance: activeItem.balance,
+          status: activeItem.status,
+          dofd: activeItem.dofd,
+          issues: activeItem.issues,
+          letterType: activeItem.letterType,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Couldn't log that to your tracker.");
+      setLoggedTrackedItemId(data.trackedItemId);
+    } catch (e: any) {
+      setError(e.message || "Couldn't log that to your tracker.");
+    }
+    setLoggingTracker(false);
   };
 
   const generateLetter = async () => {
@@ -510,6 +544,23 @@ export default function AnalyzePage() {
               <div className="text-creamDim text-xs mt-2.5">
                 Fill any [bracketed] blanks, print, sign, and send certified
                 mail with return receipt. Keep a copy and the date.
+              </div>
+              <div className="mt-4">
+                {loggedTrackedItemId ? (
+                  <div className="text-goldSoft text-xs font-semibold">
+                    Logged to your round tracker.
+                  </div>
+                ) : (
+                  <button
+                    onClick={logToTracker}
+                    disabled={loggingTracker}
+                    className="border border-line text-gold rounded-lg px-4 py-2 text-xs disabled:opacity-50"
+                  >
+                    {loggingTracker
+                      ? "Logging…"
+                      : "Once it's mailed, log it to my tracker"}
+                  </button>
+                )}
               </div>
             </div>
           )}
