@@ -7,8 +7,14 @@ Next.js app for Creditology AI Pro.
 npm install
 npm run dev
 
-## Environment variables (added as we build each feature)
+## Environment variables
 
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
 - ANTHROPIC_API_KEY — server only, never exposed to the browser
-- NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
-- STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_STRIPE_PRICE_ID
+- SUPABASE_SERVICE_ROLE_KEY — not used yet, reserved for a future admin dashboard
+
+## Database setup
+
+Run supabase/schema.sql once in the Supabase SQL Editor to create the
+analyses and usage_logs tables, plus the private "reports" storage bucket.

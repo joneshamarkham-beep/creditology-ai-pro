@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { logout } from "@/lib/supabase/actions";
@@ -31,10 +32,16 @@ export default async function DashboardPage() {
         <div className="text-[10px] tracking-[0.3em] text-gold font-bold mb-2">
           STATUS
         </div>
-        <div className="text-cream text-[15px] leading-relaxed">
-          You&apos;re logged in. Report upload and the Creditology Method
-          analysis come next.
+        <div className="text-cream text-[15px] leading-relaxed mb-4">
+          You&apos;re logged in. Upload a report to run the Creditology
+          Method.
         </div>
+        <Link
+          href="/dashboard/analyze"
+          className="inline-block bg-terracotta text-[#1A0F09] font-bold rounded-lg px-5 py-3 text-sm"
+        >
+          Analyze a report
+        </Link>
       </div>
 
       <footer className="text-center text-creamDim text-[11px] mt-12 tracking-wider">
